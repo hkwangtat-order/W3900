@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="職人(元朗) - 專用電子落單表">
+    <meta property="og:description" content="香港宏達有限公司提供">
+    <title>職人(元朗) - 專用訂貨單</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f8f9fa; padding-bottom: 140px; }
+        .sticky-header-container { position: sticky; top: 0; z-index: 1020; background-color: #212529; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .top-info { padding: 12px 15px 5px 15px; color: white; }
+        .client-name { font-size: 1.3rem; font-weight: 800; color: #ffc107; }
+        .nav-tabs { border-bottom: none; padding: 0 10px; }
+        .nav-link { color: #aaa; font-weight: bold; border: none; border-radius: 10px 10px 0 0; padding: 10px 15px; font-size: 1rem; background: transparent; }
+        .nav-link.active { background-color: #f8f9fa; color: #000; border-bottom: 4px solid #ffc107; }
+        .search-section { background-color: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #ddd; display: none; }
+        .search-wrapper { position: relative; }
+        .search-input { border-radius: 20px; border: 1px solid #ccc; padding: 8px 35px 8px 15px; width: 100%; }
+        .btn-clear-search { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #adb5bd; cursor: pointer; font-size: 1.1rem; display: none; z-index: 10; }
+        .cat-header { background-color: #ffc107; color: #000; font-weight: 800; padding: 8px 15px; margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid #e0a800; }
+        .product-row { background: white; border-bottom: 1px solid #eee; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .product-row.oos { background-color: #f8f9fa; opacity: 0.8; }
+        .p-info { flex: 1; padding-right: 10px; overflow: hidden; }
+        .p-name { font-size: 1.1rem; font-weight: 700; color: #000; line-height: 1.3; margin-bottom: 2px; }
+        .p-code { font-size: 0.85rem; color: #888; font-weight: normal; font-family: Arial, sans-serif; }
+        .oos-badge { font-size: 0.8rem; background-color: #dc3545; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; vertical-align: middle; }
+        .qty-control { display: flex; align-items: center; background: #fff; border: 1px solid #ced4da; border-radius: 8px; width: 120px; justify-content: space-between; height: 38px; flex-shrink: 0; overflow: hidden; }
+        .qty-control.disabled { background: #e9ecef; border-color: #dee2e6; }
+        .qty-btn { width: 35px; height: 100%; border-radius: 0; background: #f8f9fa; color: #212529; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 1.2rem; user-select: none; border: none; }
+        .qty-btn:active { background: #ffc107; }
+        .qty-btn.disabled { color: #adb5bd; cursor: not-allowed; background: #e9ecef; }
+        .qty-input { width: 50px; text-align: center; border: none; font-weight: bold; font-size: 1.1rem; color: #333; background: transparent; padding: 0; }
+        .qty-input.unit-kg { color: #d63384; font-size: 1rem; }
+        .product-row.selected { background-color: #fff9db; border-left: 5px solid #ffc107; }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; box-shadow: 0 -4px 15px rgba(0,0,0,0.15); padding: 10px 15px; z-index: 1030; display: flex; flex-direction: column; gap: 8px; }
+        .bottom-info-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 2px; }
+        .bottom-btn-row { display: flex; gap: 8px; width: 100%; }
+        
+        .total-box { font-size: 1.1rem; font-weight: bold; color: #333; }
+        .total-num { color: #d32f2f; font-size: 1.4rem; padding: 0 3px; }
+        
+        .btn-view-cart { background-color: #6c757d; color: white; border: none; padding: 6px 15px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; transition: all 0.3s ease; }
+        .btn-view-cart.active { background: linear-gradient(45deg, #ff9800, #ff5722); box-shadow: 0 2px 8px rgba(255, 87, 34, 0.4); }
+        
+        .btn-send { border: none; padding: 12px 5px; border-radius: 10px; font-weight: bold; font-size: 1rem; flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; color: white; transition: transform 0.1s; }
+        .btn-send:active { transform: scale(0.98); }
+        .btn-sales { background-color: #25D366; box-shadow: 0 4px 10px rgba(37, 211,
