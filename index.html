@@ -341,14 +341,19 @@
         let msg=`${customerCode} ${customerName}\n日期：${dateStr}\n訂貨單：\n\n`;
         const fmt=c=>{const p=productMap[c];const n=p?p.name:c;let q=cart[c].toString();if(cartUnits[c]==='kg')q+='K';return ` ${q.padEnd(5,' ')} ${n} (${c})\n`};
         
+                // --- V9.0 排序升級 (A-Z) ---
+        let codes = Object.keys(cart).sort(); // 這裡執行排序
+        
         let hasNewItems = false;
-        for(let c in cart){
+        for(let c of codes){ // 這裡改用排序後的 codes
             if(!frequentCodes.includes(c) && !learnedFrequent.includes(c)){
                 learnedFrequent.push(c);
                 hasNewItems = true;
             }
             msg+=fmt(c); 
         }
+        // -------------------------
+
         
         if(hasNewItems){
             localStorage.setItem(storageKey + '_learned', JSON.stringify(learnedFrequent));
